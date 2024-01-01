@@ -9,7 +9,6 @@ import BigInt
 import CommonCrypto
 import CryptoKit
 import Foundation
-import Network
 import SwiftECC
 import System
 
@@ -20,7 +19,7 @@ class NearbyConnection {
     qos: .utility
   )  // FIFO (non-concurrent) queue to avoid those exciting concurrency bugs
 
-  internal let connection: NWConnection
+  internal var connection: Connection
   internal var remoteDeviceInfo: RemoteDeviceInfo?
   private var payloadBuffers: [Int64: NSMutableData] = [:]
   internal var encryptionDone: Bool = false
@@ -47,7 +46,7 @@ class NearbyConnection {
 
   private(set) var pinCode: String?
 
-  init(connection: NWConnection, id: String) {
+  init(connection: Connection, id: String) {
     self.connection = connection
     self.id = id
   }
@@ -162,6 +161,8 @@ class NearbyConnection {
     lengthPrefixedData.append(frame)
     connection.send(
       content: lengthPrefixedData,
+      contentContext: .defaultMessage,
+      isComplete: true,
       completion: .contentProcessed({ error in
         if let completion = completion {
           completion()
@@ -442,7 +443,9 @@ class NearbyConnection {
 
   internal func disconnect() {
     connection.send(
-      content: nil, isComplete: true,
+      content: nil,
+      contentContext: .defaultMessage,
+      isComplete: true,
       completion: .contentProcessed({ error in
         self.handleConnectionClosure()
       }))

@@ -9,7 +9,6 @@ import BigInt
 import CommonCrypto
 import CryptoKit
 import Foundation
-import Network
 import SwiftECC
 import System
 import UniformTypeIdentifiers
@@ -35,14 +34,17 @@ class OutboundNearbyConnection: NearbyConnection {
 
   init(
     fileManager: FileManager,
-    connection: NWConnection,
+    connection: Connection,
     id: String,
     urlsToSend: [URL]
   ) {
     self.fileManager = fileManager
     self.urlsToSend = urlsToSend
 
-    super.init(connection: connection, id: id)
+    super.init(
+      connection: connection,
+      id: id
+    )
     if urlsToSend.count == 1 && !urlsToSend[0].isFileURL {
       textPayloadID = Int64.random(in: Int64.min...Int64.max)
     }

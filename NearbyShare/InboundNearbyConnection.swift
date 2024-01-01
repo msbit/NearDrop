@@ -10,7 +10,6 @@ import BigInt
 import CommonCrypto
 import CryptoKit
 import Foundation
-import Network
 import SwiftECC
 import System
 
@@ -35,14 +34,17 @@ class InboundNearbyConnection: NearbyConnection {
     fileHandles: FileHandles,
     fileManager: FileManager,
     workspace: Workspace,
-    connection: NWConnection,
+    connection: Connection,
     id: String
   ) {
     self.fileHandles = fileHandles
     self.fileManager = fileManager
     self.workspace = workspace
 
-    super.init(connection: connection, id: id)
+    super.init(
+      connection: connection,
+      id: id
+    )
   }
 
   override func handleConnectionClosure() {
