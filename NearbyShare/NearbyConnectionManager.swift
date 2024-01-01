@@ -172,7 +172,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
 
   override convenience init() {
     self.init(
-      fileManager: FileManager.default,
+      fileManager: Foundation.FileManager.default,
       listener: try! NWListener(using: NWParameters(tls: .none)),
       workspace: NSWorkspace.shared
     )

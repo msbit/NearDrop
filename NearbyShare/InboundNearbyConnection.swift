@@ -371,7 +371,11 @@ class InboundNearbyConnection: NearbyConnection {
   private func acceptTransfer() {
     do {
       for (id, file) in transferredFiles {
-        fileManager.createFile(atPath: file.destinationURL.path, contents: nil)
+        fileManager.createFile(
+          atPath: file.destinationURL.path,
+          contents: nil,
+          attributes: nil
+        )
         let handle = try FileHandle(forWritingTo: file.destinationURL)
         transferredFiles[id]!.fileHandle = handle
         let progress = Progress()
