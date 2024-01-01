@@ -16,7 +16,7 @@ import System
 
 class InboundNearbyConnection: NearbyConnection {
   private let fileManager: FileManager
-  private let workspace: NSWorkspace
+  private let workspace: Workspace
 
   private var currentState: State = .initial
   public var delegate: InboundNearbyConnectionDelegate?
@@ -32,7 +32,7 @@ class InboundNearbyConnection: NearbyConnection {
 
   init(
     fileManager: FileManager,
-    workspace: NSWorkspace,
+    workspace: Workspace,
     connection: NWConnection,
     id: String
   ) {

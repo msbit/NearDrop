@@ -41,6 +41,7 @@
 		69DCF49C2AB8C58500CBE2CC /* SwiftECC in Frameworks */ = {isa = PBXBuildFile; productRef = 69DCF49B2AB8C58500CBE2CC /* SwiftECC */; };
 		69DCF49D2AB8C9A500CBE2CC /* libNearbyShare.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */; };
 		69DCF49E2AB8C9A500CBE2CC /* libNearbyShare.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D0EE61814474E98AC49FD5F3 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17E4B6EE8769FC5081F62E9 /* Workspace.swift */; };
 		FBA8332042C02B4A5E877FC8 /* Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDC4E00CA9A0ABA8006D8A2 /* Listener.swift */; };
 /* End PBXBuildFile section */
 
@@ -179,6 +180,7 @@
 		69DA9A2C29E18CB500A442DA /* securegcm.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = securegcm.pb.swift; sourceTree = "<group>"; };
 		69DA9A2D29E18CB500A442DA /* securemessage.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = securemessage.pb.swift; sourceTree = "<group>"; };
 		69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libNearbyShare.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		A17E4B6EE8769FC5081F62E9 /* Workspace.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
 		A3930F0529EAB2D1008F891D /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = it; path = it.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		A3930F0629EAB2D1008F891D /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AE37AC272ABB62E400F0FF91 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = hu; path = hu.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				69DA9A2029E0CC4E00A442DA /* Data+Extensions.swift */,
 				2FDC4E00CA9A0ABA8006D8A2 /* Listener.swift */,
 				1DC42BAC0D031416B961251E /* FileManager.swift */,
+				A17E4B6EE8769FC5081F62E9 /* Workspace.swift */,
 			);
 			path = NearbyShare;
 			sourceTree = "<group>";
@@ -517,6 +520,7 @@
 				69DCF4932AB70E9700CBE2CC /* Data+Extensions.swift in Sources */,
 				FBA8332042C02B4A5E877FC8 /* Listener.swift in Sources */,
 				2B3234B0983C342F9286E630 /* FileManager.swift in Sources */,
+				D0EE61814474E98AC49FD5F3 /* Workspace.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

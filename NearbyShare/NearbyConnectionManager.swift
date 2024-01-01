@@ -155,7 +155,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
 {
   private let fileManager: FileManager
   private var listener: Listener
-  private let workspace: NSWorkspace
+  private let workspace: Workspace
 
   public let endpointID: [UInt8] = generateEndpointID()
   private var mdnsService: NetService?
@@ -181,7 +181,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
   init(
     fileManager: FileManager,
     listener: Listener,
-    workspace: NSWorkspace
+    workspace: Workspace
   ) {
     self.fileManager = fileManager
     self.listener = listener
