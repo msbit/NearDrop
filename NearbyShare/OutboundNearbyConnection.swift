@@ -15,8 +15,10 @@ import System
 import UniformTypeIdentifiers
 
 class OutboundNearbyConnection: NearbyConnection {
-  private var currentState: State = .initial
+  private let fileManager: FileManager
   private let urlsToSend: [URL]
+
+  private var currentState: State = .initial
   private var ukeyClientFinishMsgData: Data?
   private var queue: [OutgoingFileTransfer] = []
   private var currentTransfer: OutgoingFileTransfer?
@@ -31,8 +33,15 @@ class OutboundNearbyConnection: NearbyConnection {
       sentPairedKeyResult, sentIntroduction, sendingFiles
   }
 
-  init(connection: NWConnection, id: String, urlsToSend: [URL]) {
+  init(
+    fileManager: FileManager,
+    connection: NWConnection,
+    id: String,
+    urlsToSend: [URL]
+  ) {
+    self.fileManager = fileManager
     self.urlsToSend = urlsToSend
+
     super.init(connection: connection, id: id)
     if urlsToSend.count == 1 && !urlsToSend[0].isFileURL {
       textPayloadID = Int64.random(in: Int64.min...Int64.max)
@@ -286,7 +295,7 @@ class OutboundNearbyConnection: NearbyConnection {
         guard url.isFileURL else { continue }
         var meta = Sharing_Nearby_FileMetadata()
         meta.name = OutboundNearbyConnection.sanitizeFileName(name: url.lastPathComponent)
-        let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
+        let attrs = try fileManager.attributesOfItem(atPath: url.path)
         meta.size = (attrs[FileAttributeKey.size] as! NSNumber).int64Value
         let typeID = try? url.resourceValues(forKeys: [.typeIdentifierKey]).typeIdentifier
         meta.mimeType = "application/octet-stream"

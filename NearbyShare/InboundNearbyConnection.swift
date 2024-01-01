@@ -15,6 +15,7 @@ import SwiftECC
 import System
 
 class InboundNearbyConnection: NearbyConnection {
+  private let fileManager: FileManager
 
   private var currentState: State = .initial
   public var delegate: InboundNearbyConnectionDelegate?
@@ -28,7 +29,13 @@ class InboundNearbyConnection: NearbyConnection {
       receivingFiles, disconnected
   }
 
-  override init(connection: NWConnection, id: String) {
+  init(
+    fileManager: FileManager,
+    connection: NWConnection,
+    id: String
+  ) {
+    self.fileManager = fileManager
+
     super.init(connection: connection, id: id)
   }
 
@@ -299,12 +306,12 @@ class InboundNearbyConnection: NearbyConnection {
     currentState = .waitingForUserConsent
     if frame.v1.introduction.fileMetadata.count > 0 && frame.v1.introduction.textMetadata.isEmpty {
       let downloadsDirectory =
-        (try FileManager.default.url(
+        (try fileManager.url(
           for: .downloadsDirectory, in: .userDomainMask, appropriateFor: nil, create: true))
         .resolvingSymlinksInPath()
       for file in frame.v1.introduction.fileMetadata {
         var dest = downloadsDirectory.appendingPathComponent(file.name)
-        if FileManager.default.fileExists(atPath: dest.path) {
+        if fileManager.fileExists(atPath: dest.path) {
           var counter = 1
           var path: String
           let ext = dest.pathExtension
@@ -315,7 +322,7 @@ class InboundNearbyConnection: NearbyConnection {
               path += ".\(ext)"
             }
             counter += 1
-          } while FileManager.default.fileExists(atPath: path)
+          } while fileManager.fileExists(atPath: path)
           dest = URL(fileURLWithPath: path)
         }
         let info = InternalFileInfo(
@@ -361,7 +368,7 @@ class InboundNearbyConnection: NearbyConnection {
   private func acceptTransfer() {
     do {
       for (id, file) in transferredFiles {
-        FileManager.default.createFile(atPath: file.destinationURL.path, contents: nil)
+        fileManager.createFile(atPath: file.destinationURL.path, contents: nil)
         let handle = try FileHandle(forWritingTo: file.destinationURL)
         transferredFiles[id]!.fileHandle = handle
         let progress = Progress()
@@ -405,7 +412,7 @@ class InboundNearbyConnection: NearbyConnection {
   private func deletePartiallyReceivedFiles() throws {
     for (_, file) in transferredFiles {
       guard file.created else { continue }
-      try FileManager.default.removeItem(at: file.destinationURL)
+      try fileManager.removeItem(at: file.destinationURL)
     }
   }
 }

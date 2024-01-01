@@ -152,6 +152,7 @@ public protocol ShareExtensionDelegate: AnyObject {
 public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearbyConnectionDelegate,
   OutboundNearbyConnectionDelegate
 {
+  private let fileManager: FileManager
   private let tcpListener: NWListener
 
   public let endpointID: [UInt8] = generateEndpointID()
@@ -169,13 +170,16 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
 
   override convenience init() {
     self.init(
+      fileManager: FileManager.default,
       tcpListener: try! NWListener(using: NWParameters(tls: .none))
     )
   }
 
   init(
+    fileManager: FileManager,
     tcpListener: NWListener
   ) {
+    self.fileManager = fileManager
     self.tcpListener = tcpListener
 
     super.init()
@@ -193,7 +197,11 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
     }
     tcpListener.newConnectionHandler = { (connection: NWConnection) in
       let id = UUID().uuidString
-      let conn = InboundNearbyConnection(connection: connection, id: id)
+      let conn = InboundNearbyConnection(
+        fileManager: self.fileManager,
+        connection: connection,
+        id: id
+      )
       self.activeConnections[id] = conn
       conn.delegate = self
       conn.start()
@@ -377,7 +385,12 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
     let tcp = NWProtocolTCP.Options.init()
     tcp.noDelay = true
     let nwconn = NWConnection(to: info.service.endpoint, using: NWParameters(tls: .none, tcp: tcp))
-    let conn = OutboundNearbyConnection(connection: nwconn, id: deviceID, urlsToSend: urls)
+    let conn = OutboundNearbyConnection(
+      fileManager: fileManager,
+      connection: nwconn,
+      id: deviceID,
+      urlsToSend: urls
+    )
     conn.delegate = self
     let transfer = OutgoingTransferInfo(
       service: info.service,
