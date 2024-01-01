@@ -5,6 +5,7 @@
 //  Created by Grishka on 08.04.2023.
 //
 
+import AppKit
 import Foundation
 import Network
 import System
@@ -154,6 +155,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
 {
   private let fileManager: FileManager
   private let tcpListener: NWListener
+  private let workspace: NSWorkspace
 
   public let endpointID: [UInt8] = generateEndpointID()
   private var mdnsService: NetService?
@@ -171,16 +173,19 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
   override convenience init() {
     self.init(
       fileManager: FileManager.default,
-      tcpListener: try! NWListener(using: NWParameters(tls: .none))
+      tcpListener: try! NWListener(using: NWParameters(tls: .none)),
+      workspace: NSWorkspace.shared
     )
   }
 
   init(
     fileManager: FileManager,
-    tcpListener: NWListener
+    tcpListener: NWListener,
+    workspace: NSWorkspace
   ) {
     self.fileManager = fileManager
     self.tcpListener = tcpListener
+    self.workspace = workspace
 
     super.init()
   }
@@ -199,6 +204,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
       let id = UUID().uuidString
       let conn = InboundNearbyConnection(
         fileManager: self.fileManager,
+        workspace: self.workspace,
         connection: connection,
         id: id
       )

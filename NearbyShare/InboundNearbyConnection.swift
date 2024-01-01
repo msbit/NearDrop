@@ -16,6 +16,7 @@ import System
 
 class InboundNearbyConnection: NearbyConnection {
   private let fileManager: FileManager
+  private let workspace: NSWorkspace
 
   private var currentState: State = .initial
   public var delegate: InboundNearbyConnectionDelegate?
@@ -31,10 +32,12 @@ class InboundNearbyConnection: NearbyConnection {
 
   init(
     fileManager: FileManager,
+    workspace: NSWorkspace,
     connection: NWConnection,
     id: String
   ) {
     self.fileManager = fileManager
+    self.workspace = workspace
 
     super.init(connection: connection, id: id)
   }
@@ -136,7 +139,7 @@ class InboundNearbyConnection: NearbyConnection {
   override func processBytesPayload(payload: Data, id: Int64) throws -> Bool {
     if id == textPayloadID {
       if let urlStr = String(data: payload, encoding: .utf8), let url = URL(string: urlStr) {
-        NSWorkspace.shared.open(url)
+        workspace.open(url)
       }
       try sendDisconnectionAndDisconnect()
       return true
