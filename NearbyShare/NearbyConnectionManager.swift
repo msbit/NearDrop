@@ -154,7 +154,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
   OutboundNearbyConnectionDelegate
 {
   private let fileManager: FileManager
-  private let tcpListener: NWListener
+  private var listener: Listener
   private let workspace: NSWorkspace
 
   public let endpointID: [UInt8] = generateEndpointID()
@@ -173,18 +173,18 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
   override convenience init() {
     self.init(
       fileManager: FileManager.default,
-      tcpListener: try! NWListener(using: NWParameters(tls: .none)),
+      listener: try! NWListener(using: NWParameters(tls: .none)),
       workspace: NSWorkspace.shared
     )
   }
 
   init(
     fileManager: FileManager,
-    tcpListener: NWListener,
+    listener: Listener,
     workspace: NSWorkspace
   ) {
     self.fileManager = fileManager
-    self.tcpListener = tcpListener
+    self.listener = listener
     self.workspace = workspace
 
     super.init()
@@ -195,12 +195,12 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
   }
 
   private func startTCPListener() {
-    tcpListener.stateUpdateHandler = { (state: NWListener.State) in
+    listener.stateUpdateHandler = { (state: NWListener.State) in
       if case .ready = state {
         self.initMDNS()
       }
     }
-    tcpListener.newConnectionHandler = { (connection: NWConnection) in
+    listener.newConnectionHandler = { (connection: NWConnection) in
       let id = UUID().uuidString
       let conn = InboundNearbyConnection(
         fileManager: self.fileManager,
@@ -212,7 +212,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
       conn.delegate = self
       conn.start()
     }
-    tcpListener.start(queue: .global(qos: .utility))
+    listener.start(queue: .global(qos: .utility))
   }
 
   private static func generateEndpointID() -> [UInt8] {
@@ -236,7 +236,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
     let name = Data(nameBytes).urlSafeBase64EncodedString()
     let endpointInfo = EndpointInfo(name: Host.current().localizedName!, deviceType: .computer)
 
-    let port: Int32 = Int32(tcpListener.port!.rawValue)
+    let port: Int32 = Int32(listener.port!.rawValue)
     mdnsService = NetService(domain: "", type: "_FC9F5ED42C8A._tcp.", name: name, port: port)
     mdnsService?.delegate = self
     mdnsService?.setTXTRecord(
