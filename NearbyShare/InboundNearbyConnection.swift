@@ -15,6 +15,7 @@ import SwiftECC
 import System
 
 class InboundNearbyConnection: NearbyConnection {
+  private let fileHandles: FileHandles
   private let fileManager: FileManager
   private let workspace: Workspace
 
@@ -31,11 +32,13 @@ class InboundNearbyConnection: NearbyConnection {
   }
 
   init(
+    fileHandles: FileHandles,
     fileManager: FileManager,
     workspace: Workspace,
     connection: NWConnection,
     id: String
   ) {
+    self.fileHandles = fileHandles
     self.fileManager = fileManager
     self.workspace = workspace
 
@@ -376,7 +379,7 @@ class InboundNearbyConnection: NearbyConnection {
           contents: nil,
           attributes: nil
         )
-        let handle = try FileHandle(forWritingTo: file.destinationURL)
+        let handle = try fileHandles.forWritingTo(file.destinationURL)
         transferredFiles[id]!.fileHandle = handle
         let progress = Progress()
         progress.fileURL = file.destinationURL

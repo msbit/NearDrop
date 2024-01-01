@@ -153,6 +153,7 @@ public protocol ShareExtensionDelegate: AnyObject {
 public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearbyConnectionDelegate,
   OutboundNearbyConnectionDelegate
 {
+  private let fileHandles: FileHandles
   private let fileManager: FileManager
   private var listener: Listener
   private let workspace: Workspace
@@ -172,6 +173,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
 
   override convenience init() {
     self.init(
+      fileHandles: LiveFileHandles(),
       fileManager: Foundation.FileManager.default,
       listener: try! NWListener(using: NWParameters(tls: .none)),
       workspace: NSWorkspace.shared
@@ -179,10 +181,12 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
   }
 
   init(
+    fileHandles: FileHandles,
     fileManager: FileManager,
     listener: Listener,
     workspace: Workspace
   ) {
+    self.fileHandles = fileHandles
     self.fileManager = fileManager
     self.listener = listener
     self.workspace = workspace
@@ -203,6 +207,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
     listener.newConnectionHandler = { (connection: NWConnection) in
       let id = UUID().uuidString
       let conn = InboundNearbyConnection(
+        fileHandles: self.fileHandles,
         fileManager: self.fileManager,
         workspace: self.workspace,
         connection: connection,
