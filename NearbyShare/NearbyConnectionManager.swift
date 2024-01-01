@@ -152,8 +152,8 @@ public protocol ShareExtensionDelegate: AnyObject {
 public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearbyConnectionDelegate,
   OutboundNearbyConnectionDelegate
 {
+  private let tcpListener: NWListener
 
-  private var tcpListener: NWListener
   public let endpointID: [UInt8] = generateEndpointID()
   private var mdnsService: NetService?
   private var activeConnections: [String: InboundNearbyConnection] = [:]
@@ -167,8 +167,17 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
 
   public static let shared = NearbyConnectionManager()
 
-  override init() {
-    tcpListener = try! NWListener(using: NWParameters(tls: .none))
+  override convenience init() {
+    self.init(
+      tcpListener: try! NWListener(using: NWParameters(tls: .none))
+    )
+  }
+
+  init(
+    tcpListener: NWListener
+  ) {
+    self.tcpListener = tcpListener
+
     super.init()
   }
 
