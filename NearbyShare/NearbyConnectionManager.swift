@@ -150,9 +150,7 @@ public protocol ShareExtensionDelegate: AnyObject {
   func transferFinished()
 }
 
-public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearbyConnectionDelegate,
-  OutboundNearbyConnectionDelegate
-{
+public class NearbyConnectionManager: NSObject, NetServiceDelegate {
   private let fileHandles: FileHandles
   private let fileManager: FileManager
   private var listener: Listener
@@ -249,20 +247,6 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
         "n": endpointInfo.serialize().urlSafeBase64EncodedString().data(using: .utf8)!
       ]))
     mdnsService?.publish()
-  }
-
-  func obtainUserConsent(
-    for transfer: TransferMetadata, from device: RemoteDeviceInfo,
-    connection: InboundNearbyConnection
-  ) {
-    guard let delegate = mainAppDelegate else { return }
-    delegate.obtainUserConsent(for: transfer, from: device)
-  }
-
-  func connectionWasTerminated(connection: InboundNearbyConnection, error: Error?) {
-    guard let delegate = mainAppDelegate else { return }
-    delegate.incomingTransfer(id: connection.id, didFinishWith: error)
-    activeConnections.removeValue(forKey: connection.id)
   }
 
   public func submitUserConsent(transferID: String, accept: Bool) {
@@ -412,7 +396,25 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate, InboundNearb
     outgoingTransfers[deviceID] = transfer
     conn.start()
   }
+}
 
+extension NearbyConnectionManager: InboundNearbyConnectionDelegate {
+  func obtainUserConsent(
+    for transfer: TransferMetadata, from device: RemoteDeviceInfo,
+    connection: InboundNearbyConnection
+  ) {
+    guard let delegate = mainAppDelegate else { return }
+    delegate.obtainUserConsent(for: transfer, from: device)
+  }
+
+  func connectionWasTerminated(connection: InboundNearbyConnection, error: Error?) {
+    guard let delegate = mainAppDelegate else { return }
+    delegate.incomingTransfer(id: connection.id, didFinishWith: error)
+    activeConnections.removeValue(forKey: connection.id)
+  }
+}
+
+extension NearbyConnectionManager: OutboundNearbyConnectionDelegate {
   func outboundConnectionWasEstablished(connection: OutboundNearbyConnection) {
     guard let transfer = outgoingTransfers[connection.id] else { return }
     DispatchQueue.main.async {
