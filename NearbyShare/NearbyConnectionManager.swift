@@ -151,8 +151,11 @@ public protocol ShareExtensionDelegate: AnyObject {
 }
 
 public class NearbyConnectionManager: NSObject, NetServiceDelegate {
+  private let browsers: Browsers
+  private let connections: Connections
   private let fileHandles: FileHandles
   private let fileManager: FileManager
+  private let host: Host
   private let netServices: NetServices
   private var listener: Listener
   private let workspace: Workspace
@@ -166,14 +169,17 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
   public var mainAppDelegate: (any MainAppDelegate)?
   private var discoveryRefCount = 0
 
-  private var browser: NWBrowser?
+  private var browser: Browser?
 
   public static let shared = NearbyConnectionManager()
 
   override convenience init() {
     self.init(
+      browsers: LiveBrowsers(),
+      connections: LiveConnections(),
       fileHandles: LiveFileHandles(),
       fileManager: Foundation.FileManager.default,
+      host: Foundation.Host.current(),
       listener: try! NWListener(using: NWParameters(tls: .none)),
       netServices: LiveNetServices(),
       workspace: NSWorkspace.shared
@@ -181,14 +187,20 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
   }
 
   public init(
+    browsers: Browsers,
+    connections: Connections,
     fileHandles: FileHandles,
     fileManager: FileManager,
+    host: Host,
     listener: Listener,
     netServices: NetServices,
     workspace: Workspace
   ) {
+    self.browsers = browsers
+    self.connections = connections
     self.fileHandles = fileHandles
     self.fileManager = fileManager
+    self.host = host
     self.listener = listener
     self.netServices = netServices
     self.workspace = workspace
@@ -241,7 +253,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
       0, 0,
     ]
     let name = Data(nameBytes).urlSafeBase64EncodedString()
-    let endpointInfo = EndpointInfo(name: Host.current().localizedName!, deviceType: .computer)
+    let endpointInfo = EndpointInfo(name: host.localizedName!, deviceType: .computer)
 
     let port: Int32 = Int32(listener.port!.rawValue)
     mdnsService = netServices.domain("", type: "_FC9F5ED42C8A._tcp.", name: name, port: port)
@@ -262,8 +274,8 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
     if discoveryRefCount == 0 {
       foundServices.removeAll()
       if browser == nil {
-        browser = NWBrowser(
-          for: .bonjourWithTXTRecord(type: "_FC9F5ED42C8A._tcp.", domain: nil),
+        browser = browsers.forDescriptor(
+          .bonjourWithTXTRecord(type: "_FC9F5ED42C8A._tcp.", domain: nil),
           using: .tcp
         )
         browser?.browseResultsChangedHandler = { newResults, changes in
@@ -383,7 +395,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
     guard let info = foundServices[deviceID] else { return }
     let tcp = NWProtocolTCP.Options.init()
     tcp.noDelay = true
-    let nwconn = NWConnection(to: info.service.endpoint, using: NWParameters(tls: .none, tcp: tcp))
+    let nwconn = connections.to(info.service.endpoint, using: NWParameters(tls: .none, tcp: tcp))
     let conn = OutboundNearbyConnection(
       fileManager: fileManager,
       connection: nwconn,
@@ -404,7 +416,8 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
 
 extension NearbyConnectionManager: InboundNearbyConnectionDelegate {
   func obtainUserConsent(
-    for transfer: TransferMetadata, from device: RemoteDeviceInfo,
+    for transfer: TransferMetadata,
+    from device: RemoteDeviceInfo,
     connection: InboundNearbyConnection
   ) {
     guard let delegate = mainAppDelegate else { return }

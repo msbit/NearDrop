@@ -154,8 +154,8 @@ class OutboundNearbyConnection: NearbyConnection {
     frame.v1.connectionRequest = Location_Nearby_Connections_ConnectionRequestFrame()
     frame.v1.connectionRequest.endpointID = String(
       bytes: NearbyConnectionManager.shared.endpointID, encoding: .ascii)!
-    frame.v1.connectionRequest.endpointName = Host.current().localizedName!
-    let endpointInfo = EndpointInfo(name: Host.current().localizedName!, deviceType: .computer)
+    frame.v1.connectionRequest.endpointName = Foundation.Host.current().localizedName!
+    let endpointInfo = EndpointInfo(name: Foundation.Host.current().localizedName!, deviceType: .computer)
     frame.v1.connectionRequest.endpointInfo = endpointInfo.serialize()
     frame.v1.connectionRequest.mediums = [.wifiLan]
     sendFrameAsync(try frame.serializedData())

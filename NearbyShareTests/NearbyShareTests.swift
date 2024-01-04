@@ -15,8 +15,11 @@ final class NearbyShareTests: XCTestCase {
 
     func testExample() throws {
         let manager = NearbyConnectionManager(
+            browsers: MockBrowsers(),
+            connections: MockConnections(),
             fileHandles: MockFileHandles(),
             fileManager: MockFileManager(),
+            host: MockHost(),
             listener: MockListener(),
             netServices: MockNetServices(),
             workspace: MockWorkspace()
@@ -40,13 +43,47 @@ final class NearbyShareTests: XCTestCase {
     }
 }
 
-class MockFileHandles: FileHandles {
+struct MockBrowsers: Browsers {
+    func forDescriptor(
+        _ descriptor: NWBrowser.Descriptor,
+        using parameters: NWParameters
+    ) -> Browser? {
+        return .none
+    }
+}
+
+struct MockConnections: Connections {
+    func to(_ to: NWEndpoint, using: NWParameters) -> Connection {
+        return MockConnection()
+    }
+}
+
+struct MockConnection: Connection {
+    var stateUpdateHandler: ((NWConnection.State) -> Void)?
+
+    func receive(
+        minimumIncompleteLength: Int,
+        maximumLength: Int,
+        completion: @escaping (Data?, NWConnection.ContentContext?, Bool, NWError?) -> Void
+    ) {}
+
+    func send(
+        content: Data?,
+        contentContext: NWConnection.ContentContext,
+        isComplete: Bool,
+        completion: NWConnection.SendCompletion
+    ) {}
+
+    func start(queue: DispatchQueue) {}
+}
+
+struct MockFileHandles: FileHandles {
     func forWritingTo(_ url: URL) throws -> FileHandle {
         throw MockError()
     }
 }
 
-class MockFileManager: NearbyShare.FileManager {
+struct MockFileManager: NearbyShare.FileManager {
     func attributesOfItem(atPath path: String) throws -> [FileAttributeKey: Any] {
         throw MockError()
     }
@@ -77,7 +114,11 @@ class MockFileManager: NearbyShare.FileManager {
     }
 }
 
-class MockNetServices: NetServices {
+struct MockHost: NearbyShare.Host {
+    var localizedName: String?
+}
+
+struct MockNetServices: NetServices {
     func domain(
         _ domain: String,
         type: String,
@@ -88,7 +129,7 @@ class MockNetServices: NetServices {
     }
 }
 
-class MockListener: Listener {
+struct MockListener: Listener {
     var newConnectionHandler: ((_ connection: NWConnection) -> Void)? {
         get {
             return .none
@@ -110,7 +151,7 @@ class MockListener: Listener {
     func start(queue: DispatchQueue) {}
 }
 
-class MockWorkspace: Workspace {
+struct MockWorkspace: Workspace {
     func open(_ url: URL) -> Bool {
         return false
     }
@@ -132,4 +173,4 @@ class MockShareExtensionDelegate: ShareExtensionDelegate {
   func transferFinished() {}
 }
 
-class MockError: Error {}
+struct MockError: Error {}

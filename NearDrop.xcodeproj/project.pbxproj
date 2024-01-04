@@ -47,6 +47,10 @@
 		E2A24D872B464E1B002732FF /* NearbyShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A24D862B464E1B002732FF /* NearbyShareTests.swift */; };
 		E2A24D882B464E1B002732FF /* libNearbyShare.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */; platformFilters = (macos, ); };
 		E2D97A372B46874B0097259C /* NetServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D97A362B46874B0097259C /* NetServices.swift */; };
+		E2D97A392B468A910097259C /* Connections.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D97A382B468A910097259C /* Connections.swift */; };
+		E2D97A3B2B468C550097259C /* Browser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D97A3A2B468C550097259C /* Browser.swift */; };
+		E2D97A3D2B468C880097259C /* Browsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D97A3C2B468C880097259C /* Browsers.swift */; };
+		E2D97A3F2B468F170097259C /* Host.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D97A3E2B468F170097259C /* Host.swift */; };
 		FBA8332042C02B4A5E877FC8 /* Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDC4E00CA9A0ABA8006D8A2 /* Listener.swift */; };
 /* End PBXBuildFile section */
 
@@ -214,6 +218,10 @@
 		E2A24D842B464E1B002732FF /* NearbyShareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NearbyShareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2A24D862B464E1B002732FF /* NearbyShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyShareTests.swift; sourceTree = "<group>"; };
 		E2D97A362B46874B0097259C /* NetServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetServices.swift; sourceTree = "<group>"; };
+		E2D97A382B468A910097259C /* Connections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connections.swift; sourceTree = "<group>"; };
+		E2D97A3A2B468C550097259C /* Browser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browser.swift; sourceTree = "<group>"; };
+		E2D97A3C2B468C880097259C /* Browsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browsers.swift; sourceTree = "<group>"; };
+		E2D97A3E2B468F170097259C /* Host.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Host.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,6 +355,10 @@
 				24D7DFD67F11F64097C73326 /* FileHandles.swift */,
 				2743FC7E2A8EF73BA4A2D0DC /* Connection.swift */,
 				E2D97A362B46874B0097259C /* NetServices.swift */,
+				E2D97A382B468A910097259C /* Connections.swift */,
+				E2D97A3A2B468C550097259C /* Browser.swift */,
+				E2D97A3C2B468C880097259C /* Browsers.swift */,
+				E2D97A3E2B468F170097259C /* Host.swift */,
 			);
 			path = NearbyShare;
 			sourceTree = "<group>";
@@ -574,19 +586,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2D97A3D2B468C880097259C /* Browsers.swift in Sources */,
 				69DCF48D2AB70E8C00CBE2CC /* offline_wire_formats.pb.swift in Sources */,
+				E2D97A3B2B468C550097259C /* Browser.swift in Sources */,
 				E2D97A372B46874B0097259C /* NetServices.swift in Sources */,
 				69DCF48F2AB70E8C00CBE2CC /* securemessage.pb.swift in Sources */,
 				69DCF4912AB70E9700CBE2CC /* NearbyConnection.swift in Sources */,
 				69DCF4922AB70E9700CBE2CC /* NearbyConnectionManager.swift in Sources */,
 				69DCF48E2AB70E8C00CBE2CC /* securegcm.pb.swift in Sources */,
 				691F53BE2ABF03820089FD92 /* OutboundNearbyConnection.swift in Sources */,
+				E2D97A3F2B468F170097259C /* Host.swift in Sources */,
 				69DCF48C2AB70E8C00CBE2CC /* device_to_device_messages.pb.swift in Sources */,
 				69DCF4902AB70E9700CBE2CC /* InboundNearbyConnection.swift in Sources */,
 				69DCF48B2AB70E8C00CBE2CC /* ukey.pb.swift in Sources */,
 				69DCF48A2AB70E8C00CBE2CC /* wire_format.pb.swift in Sources */,
 				69DCF4932AB70E9700CBE2CC /* Data+Extensions.swift in Sources */,
 				FBA8332042C02B4A5E877FC8 /* Listener.swift in Sources */,
+				E2D97A392B468A910097259C /* Connections.swift in Sources */,
 				2B3234B0983C342F9286E630 /* FileManager.swift in Sources */,
 				D0EE61814474E98AC49FD5F3 /* Workspace.swift in Sources */,
 				1D60EFD6AFC7B432BF8D6CEE /* FileHandles.swift in Sources */,

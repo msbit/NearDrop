@@ -1,7 +1,7 @@
 import Foundation
 import Network
 
-protocol Connection {
+public protocol Connection {
   var stateUpdateHandler: ((_ state: NWConnection.State) -> Void)? { get set }
 
   func receive(
