@@ -153,6 +153,7 @@ public protocol ShareExtensionDelegate: AnyObject {
 public class NearbyConnectionManager: NSObject, NetServiceDelegate {
   private let fileHandles: FileHandles
   private let fileManager: FileManager
+  private let netServices: NetServices
   private var listener: Listener
   private let workspace: Workspace
 
@@ -174,6 +175,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
       fileHandles: LiveFileHandles(),
       fileManager: Foundation.FileManager.default,
       listener: try! NWListener(using: NWParameters(tls: .none)),
+      netServices: LiveNetServices(),
       workspace: NSWorkspace.shared
     )
   }
@@ -182,11 +184,13 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
     fileHandles: FileHandles,
     fileManager: FileManager,
     listener: Listener,
+    netServices: NetServices,
     workspace: Workspace
   ) {
     self.fileHandles = fileHandles
     self.fileManager = fileManager
     self.listener = listener
+    self.netServices = netServices
     self.workspace = workspace
 
     super.init()
@@ -240,7 +244,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
     let endpointInfo = EndpointInfo(name: Host.current().localizedName!, deviceType: .computer)
 
     let port: Int32 = Int32(listener.port!.rawValue)
-    mdnsService = NetService(domain: "", type: "_FC9F5ED42C8A._tcp.", name: name, port: port)
+    mdnsService = netServices.domain("", type: "_FC9F5ED42C8A._tcp.", name: name, port: port)
     mdnsService?.delegate = self
     mdnsService?.setTXTRecord(
       NetService.data(fromTXTRecord: [

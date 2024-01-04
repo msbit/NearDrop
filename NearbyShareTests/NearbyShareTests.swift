@@ -18,6 +18,7 @@ final class NearbyShareTests: XCTestCase {
             fileHandles: MockFileHandles(),
             fileManager: MockFileManager(),
             listener: MockListener(),
+            netServices: MockNetServices(),
             workspace: MockWorkspace()
         )
 
@@ -73,6 +74,17 @@ class MockFileManager: NearbyShare.FileManager {
         create shouldCreate: Bool
     ) throws -> URL {
         throw MockError()
+    }
+}
+
+class MockNetServices: NetServices {
+    func domain(
+        _ domain: String,
+        type: String,
+        name: String,
+        port: Int32
+    ) -> NetService? {
+        return .none
     }
 }
 
