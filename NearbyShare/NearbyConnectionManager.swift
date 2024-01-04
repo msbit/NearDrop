@@ -178,7 +178,7 @@ public class NearbyConnectionManager: NSObject, NetServiceDelegate {
     )
   }
 
-  init(
+  public init(
     fileHandles: FileHandles,
     fileManager: FileManager,
     listener: Listener,
