@@ -1,11 +1,7 @@
-//
-//  NearbyShareTests.swift
-//  NearbyShareTests
-//
-//  Created by tom on 4/1/2024.
-//
-
+import Network
 import XCTest
+
+import NearbyShare
 
 final class NearbyShareTests: XCTestCase {
 
@@ -18,18 +14,110 @@ final class NearbyShareTests: XCTestCase {
     }
 
     func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+        let manager = NearbyConnectionManager(
+            fileHandles: MockFileHandles(),
+            fileManager: MockFileManager(),
+            listener: MockListener(),
+            workspace: MockWorkspace()
+        )
+
+        manager.becomeVisible()
+
+        manager.submitUserConsent(transferID: "", accept: false)
+
+        manager.startDeviceDiscovery()
+
+        manager.stopDeviceDiscovery()
+
+        manager.addShareExtensionDelegate(MockShareExtensionDelegate())
+
+        manager.removeShareExtensionDelegate(MockShareExtensionDelegate())
+
+        manager.cancelOutgoingTransfer(id: "")
+
+        manager.startOutgoingTransfer(deviceID: "", delegate: MockShareExtensionDelegate(), urls: [])
+    }
+}
+
+class MockFileHandles: FileHandles {
+    func forWritingTo(_ url: URL) throws -> FileHandle {
+        throw MockError()
+    }
+}
+
+class MockFileManager: NearbyShare.FileManager {
+    func attributesOfItem(atPath path: String) throws -> [FileAttributeKey: Any] {
+        throw MockError()
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    func createFile(
+        atPath path: String,
+        contents data: Data?,
+        attributes attr: [FileAttributeKey: Any]?
+    ) -> Bool {
+        return false
+    }
+
+    func fileExists(atPath path: String) -> Bool {
+        return false
+    }
+
+    func removeItem(at URL: URL) throws {
+        throw MockError()
+    }
+
+    func url(
+        for directory: Foundation.FileManager.SearchPathDirectory,
+        in domain: Foundation.FileManager.SearchPathDomainMask,
+        appropriateFor url: URL?,
+        create shouldCreate: Bool
+    ) throws -> URL {
+        throw MockError()
+    }
+}
+
+class MockListener: Listener {
+    var newConnectionHandler: ((_ connection: NWConnection) -> Void)? {
+        get {
+            return .none
+        }
+        set {}
+    }
+    var port: NWEndpoint.Port? {
+        get {
+            return .none
         }
     }
+    var stateUpdateHandler: ((_ newState: NWListener.State) -> Void)? {
+        get {
+            return .none
+        }
+        set {}
+    }
 
+    func start(queue: DispatchQueue) {}
 }
+
+class MockWorkspace: Workspace {
+    func open(_ url: URL) -> Bool {
+        return false
+    }
+}
+
+class MockShareExtensionDelegate: ShareExtensionDelegate {
+  func addDevice(device: RemoteDeviceInfo) {}
+
+  func removeDevice(id: String) {}
+
+  func connectionWasEstablished(pinCode: String) {}
+
+  func connectionFailed(with error: Error) {}
+
+  func transferAccepted() {}
+
+  func transferProgress(progress: Double) {}
+
+  func transferFinished() {}
+}
+
+class MockError: Error {}
