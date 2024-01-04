@@ -1,6 +1,6 @@
 import AppKit
 
-protocol Workspace {
+public protocol Workspace {
   func open(_ url: URL) -> Bool
 }
 

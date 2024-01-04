@@ -1,6 +1,6 @@
 import Foundation
 
-protocol FileHandles {
+public protocol FileHandles {
   func forWritingTo(_ url: URL) throws -> FileHandle
 }
 

@@ -1,6 +1,6 @@
 import Foundation
 
-protocol FileManager {
+public protocol FileManager {
   func attributesOfItem(atPath path: String) throws -> [FileAttributeKey: Any]
 
   func createFile(
