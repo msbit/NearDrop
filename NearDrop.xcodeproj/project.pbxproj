@@ -44,6 +44,8 @@
 		69DCF49D2AB8C9A500CBE2CC /* libNearbyShare.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */; };
 		69DCF49E2AB8C9A500CBE2CC /* libNearbyShare.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D0EE61814474E98AC49FD5F3 /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17E4B6EE8769FC5081F62E9 /* Workspace.swift */; };
+		E2A24D872B464E1B002732FF /* NearbyShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2A24D862B464E1B002732FF /* NearbyShareTests.swift */; };
+		E2A24D882B464E1B002732FF /* libNearbyShare.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */; platformFilters = (macos, ); };
 		FBA8332042C02B4A5E877FC8 /* Listener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDC4E00CA9A0ABA8006D8A2 /* Listener.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +65,13 @@
 			remoteInfo = NearbyShare;
 		};
 		69DCF49F2AB8C9A500CBE2CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69DA9A0629E0BF5100A442DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 69DCF4802AB70D0600CBE2CC;
+			remoteInfo = NearbyShare;
+		};
+		E2A24D892B464E1B002732FF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 69DA9A0629E0BF5100A442DA /* Project object */;
 			proxyType = 1;
@@ -201,6 +210,8 @@
 		B5AC98B72AC831F500351A5D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B670906E2A6D234D00DB8273 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = th; path = th.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		B670906F2A6D237600DB8273 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E2A24D842B464E1B002732FF /* NearbyShareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NearbyShareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2A24D862B464E1B002732FF /* NearbyShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyShareTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +237,14 @@
 			files = (
 				69DCF49C2AB8C58500CBE2CC /* SwiftECC in Frameworks */,
 				69DCF49A2AB8C58500CBE2CC /* SwiftProtobuf in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2A24D812B464E1B002732FF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2A24D882B464E1B002732FF /* libNearbyShare.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +284,7 @@
 				69DA9A1029E0BF5100A442DA /* NearDrop */,
 				699DEBA22AB0573200115D22 /* ShareExtension */,
 				69DCF4822AB70D0600CBE2CC /* NearbyShare */,
+				E2A24D852B464E1B002732FF /* NearbyShareTests */,
 				698DFAEC29E353220064F247 /* Frameworks */,
 				69DA9A0F29E0BF5100A442DA /* Products */,
 			);
@@ -276,6 +296,7 @@
 				69DA9A0E29E0BF5100A442DA /* NearDrop.app */,
 				699DEBA12AB0573200115D22 /* ShareExtension.appex */,
 				69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */,
+				E2A24D842B464E1B002732FF /* NearbyShareTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -325,6 +346,14 @@
 				2743FC7E2A8EF73BA4A2D0DC /* Connection.swift */,
 			);
 			path = NearbyShare;
+			sourceTree = "<group>";
+		};
+		E2A24D852B464E1B002732FF /* NearbyShareTests */ = {
+			isa = PBXGroup;
+			children = (
+				E2A24D862B464E1B002732FF /* NearbyShareTests.swift */,
+			);
+			path = NearbyShareTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -404,6 +433,24 @@
 			productReference = 69DCF4812AB70D0600CBE2CC /* libNearbyShare.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
+		E2A24D832B464E1B002732FF /* NearbyShareTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2A24D8D2B464E1B002732FF /* Build configuration list for PBXNativeTarget "NearbyShareTests" */;
+			buildPhases = (
+				E2A24D802B464E1B002732FF /* Sources */,
+				E2A24D812B464E1B002732FF /* Frameworks */,
+				E2A24D822B464E1B002732FF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E2A24D8A2B464E1B002732FF /* PBXTargetDependency */,
+			);
+			name = NearbyShareTests;
+			productName = NearbyShareTests;
+			productReference = E2A24D842B464E1B002732FF /* NearbyShareTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -411,7 +458,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					699DEBA02AB0573200115D22 = {
@@ -423,6 +470,9 @@
 					};
 					69DCF4802AB70D0600CBE2CC = {
 						CreatedOnToolsVersion = 14.3.1;
+					};
+					E2A24D832B464E1B002732FF = {
+						CreatedOnToolsVersion = 14.2;
 					};
 				};
 			};
@@ -458,6 +508,7 @@
 				69DA9A0D29E0BF5100A442DA /* NearDrop */,
 				699DEBA02AB0573200115D22 /* ShareExtension */,
 				69DCF4802AB70D0600CBE2CC /* NearbyShare */,
+				E2A24D832B464E1B002732FF /* NearbyShareTests */,
 			);
 		};
 /* End PBXProject section */
@@ -485,6 +536,13 @@
 				69D2C32D29E77F2200EC7E30 /* Localizable.strings in Resources */,
 				18637D0E2AC2A25300AF8072 /* NearDrop-InfoPlist.strings in Resources */,
 				69D2C32F29E7898C00EC7E30 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2A24D822B464E1B002732FF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,6 +590,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E2A24D802B464E1B002732FF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2A24D872B464E1B002732FF /* NearbyShareTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -549,6 +615,14 @@
 			isa = PBXTargetDependency;
 			target = 69DCF4802AB70D0600CBE2CC /* NearbyShare */;
 			targetProxy = 69DCF49F2AB8C9A500CBE2CC /* PBXContainerItemProxy */;
+		};
+		E2A24D8A2B464E1B002732FF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilters = (
+				macos,
+			);
+			target = 69DCF4802AB70D0600CBE2CC /* NearbyShare */;
+			targetProxy = E2A24D892B464E1B002732FF /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -917,6 +991,46 @@
 			};
 			name = Release;
 		};
+		E2A24D8B2B464E1B002732FF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3Y63MCQ957;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MACOSX_DEPLOYMENT_TARGET = 12.7;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = test.NearbyShareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E2A24D8C2B464E1B002732FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3Y63MCQ957;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MACOSX_DEPLOYMENT_TARGET = 12.7;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = test.NearbyShareTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -952,6 +1066,15 @@
 			buildConfigurations = (
 				69DCF4872AB70D0600CBE2CC /* Debug */,
 				69DCF4882AB70D0600CBE2CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E2A24D8D2B464E1B002732FF /* Build configuration list for PBXNativeTarget "NearbyShareTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2A24D8B2B464E1B002732FF /* Debug */,
+				E2A24D8C2B464E1B002732FF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
